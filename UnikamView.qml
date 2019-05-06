@@ -41,26 +41,28 @@ Item {
         }
     }
     Timer{
-            running:true
-            repeat:true
-            interval: 1000
-            onTriggered: {
-                if(cw){
-                    connCW.target=cw
-                }
-
+        running:true
+        repeat:true
+        interval: 1000
+        onTriggered: {
+            if(cw){
+                connCW.target=cw
             }
+
         }
+    }
     Connections {
         target: cs
         onUserListChanged:{
             //listModelUser.updateUserList()
         }
         onNewMessage:{
-            //console.log('-------->'+msg)
-            if((''+msg).substring(0, 4)==="audio"){
-                i2.source='/home/nextsigner/Imágenes/unik_android_manifest.png'
-                i1.source='/home/nextsigner/Imágenes/unik_android_manifest.png'
+            unik.debugLog=true
+
+            unik.log('-------->'+user)
+            if((''+msg).substring(0,6).indexOf('audio')>=0){
+                unik.appendAudioStreamFileWSS('/tmp/streamOutPut.ogg', (''+msg).substring(5, (''+msg).length-2))
+                unik.log('-------->'+(''+msg).substring(5, (''+msg).length-2))
                 return
             }
             if(i1.z<i2.z){
@@ -188,8 +190,8 @@ Item {
     }
 */
     function clear(){
-            for(var i=0;i<xQmlObjects.children.length;i++){
-                xQmlObjects.children[i].destroy(1)
-            }
+        for(var i=0;i<xQmlObjects.children.length;i++){
+            xQmlObjects.children[i].destroy(1)
+        }
     }
 }
