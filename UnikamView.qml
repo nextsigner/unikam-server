@@ -1,12 +1,13 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.0
-import Qt.WebSockets 1.0
+//import Qt.WebSockets 1.0
 
 Item {
     id: r
     anchors.fill: parent
     property string ip: '127.0.0.1'
     property int port: 12345
+    property bool byDefault: true
     property string serverName: 'chatserver'
     property var container: xQmlObjects
     Component.onCompleted:{
@@ -17,9 +18,19 @@ Item {
             if(arg.indexOf('-ip=')===0){
                 var m0=arg.split('=')
                 r.ip=m0[1]
+                r.byDefault=false
             }
         }
-        unik.initWebSocketServer(r.ip, r.port, r.serverName);
+        for(var i=0;i<appArgs.length;i++){
+            //console.log('------------------->'+appArgs[i])
+            arg=''+appArgs[i]
+            if(arg.indexOf('-port=')===0){
+                m0=arg.split('=')
+                r.port=m0[1]
+                r.byDefault=false
+            }
+        }
+        unik.startWSS(r.ip, r.port, r.serverName);
     }
     Item {
         id: xQmlObjects
@@ -32,6 +43,12 @@ Item {
     Image{
         id: i2
         anchors.centerIn: r
+    }
+    Text {
+        id: info
+        text: r.byDefault?'Default: '+r.ip+':'+r.port:'Seted: '+r.ip+':'+r.port
+        font.pixelSize: 10
+        color: 'white'
     }
     Connections {
         id:connCW
@@ -47,8 +64,8 @@ Item {
         onTriggered: {
             if(cw){
                 connCW.target=cw
+                stop()
             }
-
         }
     }
     Connections {
@@ -56,15 +73,25 @@ Item {
         onUserListChanged:{
             //listModelUser.updateUserList()
         }
+        property int v: 0
         onNewMessage:{
-            unik.debugLog=true
+            /*unik.debugLog=true
 
-            unik.log('-------->'+user)
-            if((''+msg).substring(0,6).indexOf('audio')>=0){
+            //unik.log('-------->'+user+':::"'+unik.base64ToByteArray(msg)+'"')
+            //unik.setFile('/tmp/wss2.ogg', unik.base64ToByteArray(msg))
+            unik.appendAudioStreamFileWSS('/tmp/streamOutPut--'+v+'.ogg', msg)
+            v++
+            return
+
+            */
+
+
+            /*if((''+msg).substring(0,6).indexOf('audio')>=0){
                 unik.appendAudioStreamFileWSS('/tmp/streamOutPut.ogg', (''+msg).substring(5, (''+msg).length-2))
                 unik.log('-------->'+(''+msg).substring(5, (''+msg).length-2))
                 return
-            }
+            }*/
+            console.log(msg)
             if(i1.z<i2.z){
                 i2.source="data:image/png;base64,"+msg
                 i1.z++
