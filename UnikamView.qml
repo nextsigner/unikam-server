@@ -31,19 +31,7 @@ Item {
             }
         }
         unik.startWSS(r.ip, r.port, r.serverName);
-    }
-    Item {
-        id: xQmlObjects
-        anchors.fill: r
-    }
-    Image{
-        id: i1
-        anchors.centerIn: r
-    }
-    Image{
-        id: i2
-        anchors.centerIn: r
-    }
+    }    
     Text {
         id: info
         text: r.byDefault?'Default: '+r.ip+':'+r.port:'Seted: '+r.ip+':'+r.port
@@ -74,37 +62,15 @@ Item {
             //listModelUser.updateUserList()
         }
         property int v: 0
-        onNewMessage:{
-            /*unik.debugLog=true
-
-            //unik.log('-------->'+user+':::"'+unik.base64ToByteArray(msg)+'"')
-            //unik.setFile('/tmp/wss2.ogg', unik.base64ToByteArray(msg))
-            unik.appendAudioStreamFileWSS('/tmp/streamOutPut--'+v+'.ogg', msg)
-            v++
-            return
-
-            */
-
-
-            /*if((''+msg).substring(0,6).indexOf('audio')>=0){
-                unik.appendAudioStreamFileWSS('/tmp/streamOutPut.ogg', (''+msg).substring(5, (''+msg).length-2))
-                unik.log('-------->'+(''+msg).substring(5, (''+msg).length-2))
-                return
-            }*/
-            console.log(msg)
-            if(i1.z<i2.z){
-                i2.source="data:image/png;base64,"+msg
-                i1.z++
-            }else{
-                i1.source="data:image/png;base64,"+msg
-                i2.z++
-            }
-            /*console.log('A new message: '+user+' say: '+msg)
-            var obj = Qt.createQmlObject(msg, r.container, 'unikastcode')
-            if(app){
-                app.active=true
-            }*/
-            //listModelMsg.addMsg('['+time+']'+user+':'+msg)
+        onNewMessage:{            
+            var c='import QtQuick 2.0\n'
+            c+='Image{\n'
+            c+='    id: r;\n'
+            c+='    anchors.centerIn:parent\n'
+            c+='    source:"data:image/png;base64,"+'+msg+';\n'
+            c+='    Component.onCompleted: r.destroy(200)\n'
+            c+='}'
+            var comp=Qt.createQmlObject(c, r, 'codeWSS')
         }
     }
     /*Column{
