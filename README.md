@@ -1,4 +1,4 @@
-# unikast
+# unikast-server
 
 It's a Qml Module for Unik Qml Engine.
 
@@ -9,7 +9,6 @@ It's a Qml Module for Unik Qml Engine.
 *Clone this repository into your preferred folder.
 *Run Unik Qml Engine with the command line 
 
-unik(.exe in Windows) -folder=<your preferred folder>/unikast
+unik(.exe in Windows) -folder=<your preferred folder>/unikast-server
 
-Note: For use unikast casting Qml code from a Qml code sender, is necesary download and running the unikastclient module.  
-# unikam-server
+Note: For use unikast-server casting Qml code from a Qml code sender, is necesary download and running the unikast-client module.  
